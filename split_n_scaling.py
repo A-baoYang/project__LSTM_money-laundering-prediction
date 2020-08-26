@@ -60,7 +60,7 @@ testset_for_scaling.iloc[:, np.r_[2, 4:30]] = sd.transform(testset_for_scaling.i
 
 ### Update scaled data to sequence format & Create pre-padding
 #### training set
-train_x_seq = []
+train_x_seq = {}
 for u in tqdm(trainset_for_scaling.actor_id.unique()):
     train_x_seq[u] = {}
     # update scaled data
@@ -96,7 +96,7 @@ np.save('train_y__observ_{}__labeled_{}_{}_{}_{}.npy'.format(observ_daterange, l
 print('training sequence data finish storage.')
 
 #### validation set
-val_x_seq = []
+val_x_seq = {}
 for u in tqdm(valset_for_scaling.actor_id.unique()):
     val_x_seq[u] = {}
     # update scaled data
@@ -132,7 +132,7 @@ np.save('val_y__observ_{}__labeled_{}_{}_{}_{}.npy'.format(observ_daterange, lab
 print('validation sequence data finish storage.')
 
 #### testing set
-test_X_seq = []
+test_X_seq = {}
 for u in tqdm(testset_for_scaling.actor_id.unique()):
     test_X_seq[u] = {}
     # update scaled data
@@ -171,8 +171,8 @@ print('testing sequence data finish storage.')
 ### Over-Sampling: SMOTE (only works for 2d data, need to reshape before implement)
 train_X_res, train_Y_res = SMOTE(random_state=666).fit_resample(np.reshape(_train_x_seq, (_train_x_seq.shape[0], _train_x_seq.shape[1]*_train_x_seq.shape[2])), train_y.label)
 val_X_res, val_Y_res = SMOTE(random_state=666).fit_resample(np.reshape(_val_x_seq, (_val_x_seq.shape[0], _val_x_seq.shape[1]*_val_x_seq.shape[2])), val_y.label)
-train_X_res = np.reshape(train_X_res, (train_X_res.shape[0], train_X_res.shape[1], train_X_res.shape[2]))
-val_X_res = np.reshape(val_X_res, (val_X_res.shape[0], val_X_res.shape[1], val_X_res.shape[2]))
+train_X_res = np.reshape(train_X_res, (train_X_res.shape[0], _train_x_seq.shape[1], _train_x_seq.shape[2]))
+val_X_res = np.reshape(val_X_res, (val_X_res.shape[0], _val_x_seq.shape[1], _val_x_seq.shape[2]))
 print(train_X_res.shape, train_Y_res.shape)
 print(val_X_res.shape, val_Y_res.shape)
 ### Store to NPY

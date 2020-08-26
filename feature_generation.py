@@ -101,7 +101,7 @@ print(f'data ETL finished - event: {df.shape}')
 df['isExchangeDeal'] = np.where(df['txn_currency_code'].isin(['TWD','unknown']), 0, 1)
 print(f'data ETL finished - isExchangeDeal: {df.shape}')
 
-#### (4-1) atm_location - conditional categorization
+#### (4-1) atm_location - conditional categorization (old method)
 df['atm_location'] = df['atm_location'].apply(lambda x: x.replace(u'—', ' '))  # 捷運站 超商分店會有的連結符號
 cond_list = [
     df['atm_location'].str.contains('分行'),

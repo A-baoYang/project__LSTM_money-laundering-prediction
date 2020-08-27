@@ -4,6 +4,8 @@ import json
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
+from sklearn.preprocessing import StandardScaler
+sd = StandardScaler()
 
 ### Load data & preprocessing
 observ_daterange = '1910_1912'
@@ -56,7 +58,15 @@ for u in tqdm(uid):
     for i in range(0, len(all_seq[u]['clust_index'])):
         clust_collect.append(all_seq[u]['clust_index'][i])
         diff_collect.append(all_seq[u]['time_diff'][i])
-
 df = df.concat([df, pd.DataFrame({'clust_index': clust_collect, 'time_diff': diff_collect})], axis=1)
-df.to_csv('featureGeneration__observ_{}__labeled_{}_{}_{}_{}.csv'.format(observ_daterange, label_daterange, try_date, version, desc))
 
+
+### time_diff scaling
+df['time_diff_scaled'] = sd.fit_transform(df['time_diff'].values.reshape(-1, 1))
+for u in tqdm(uid):
+    all_seq[u]['time_diff_scaled'] = df[df['actor_id'] == u]['time_diff_scaled'].values.tolist()
+
+with open('make_sequence__observ_{}__labeled_{}_{}_{}_{}'.format(observ_daterange, label_daterange, try_date, version, desc)) as fp:
+    json.dump(all_seq, fp)
+
+df.to_csv('featureGeneration__observ_{}__labeled_{}_{}_{}_{}.csv'.format(observ_daterange, label_daterange, try_date, version, desc))

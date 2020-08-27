@@ -17,11 +17,11 @@ label_daterange = '2001'
 try_date = '200825'
 version = 'vv10'
 desc = '?locationInfo=location_token&scaler=standardscaler'
-train_X_res = np.load('OverSamp__train_X_seq__observ_{}__labeled_{}_{}_{}_{}.npy'.format(observ_daterange, label_daterange, try_date, version, desc))
-train_Y_res = np.load('OverSamp__train_Y__observ_{}__labeled_{}_{}_{}_{}.npy'.format(observ_daterange, label_daterange, try_date, version, desc))
-val_X_res = np.load('OverSamp__val_X_seq__observ_{}__labeled_{}_{}_{}_{}.npy'.format(observ_daterange, label_daterange, try_date, version, desc))
-val_Y_res = np.load('OverSamp__val_Y__observ_{}__labeled_{}_{}_{}_{}.npy'.format(observ_daterange, label_daterange, try_date, version, desc))
-test_X = np.load('test_X_seq__observ_{}__labeled_{}_{}_{}_{}.npy'.format(observ_daterange, label_daterange, try_date, version, desc))
+train_X_res = np.load('OverSamp__train_x__observ_{}__labeled_{}_{}_{}_{}.npy'.format(observ_daterange, label_daterange, try_date, version, desc))
+train_Y_res = np.load('OverSamp__train_y__observ_{}__labeled_{}_{}_{}_{}.npy'.format(observ_daterange, label_daterange, try_date, version, desc))
+val_X_res = np.load('OverSamp__val_x__observ_{}__labeled_{}_{}_{}_{}.npy'.format(observ_daterange, label_daterange, try_date, version, desc))
+val_Y_res = np.load('OverSamp__val_y__observ_{}__labeled_{}_{}_{}_{}.npy'.format(observ_daterange, label_daterange, try_date, version, desc))
+test_X = np.load('test_X__observ_{}__labeled_{}_{}_{}_{}.npy'.format(observ_daterange, label_daterange, try_date, version, desc))
 test_Y = np.load('test_Y__observ_{}__labeled_{}_{}_{}_{}.npy'.format(observ_daterange, label_daterange, try_date, version, desc))
 
 
@@ -113,7 +113,7 @@ plt.show()
 ### Confusion Matrix
 classes = [0, 1, 2]
 y_pred = np.argmax(model.predict(test_X), axis=-1)
-con_mat = tf.math.confusion_matrix(labels=test_Y.label, predictions=y_pred)
+con_mat = tf.math.confusion_matrix(labels=test_Y, predictions=y_pred)
 with tf.Session():
     print('Confusion Matrix (Precision): \n', tf.Tensor.eval(con_mat, feed_dict=None, session=None))
 
@@ -128,4 +128,4 @@ with tf.Session():
     plt.xlabel('Predicted label')
     plt.show()
 
-print(classification_report(y_true=test_Y.label, y_pred=y_pred))
+print(classification_report(y_true=test_Y, y_pred=y_pred))

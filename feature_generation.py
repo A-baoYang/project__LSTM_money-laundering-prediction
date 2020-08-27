@@ -12,6 +12,8 @@ import numpy as np
 import tzlocal
 from datetime import datetime
 # from wordcloud import WordCloud
+from sklearn.preprocessing import StandardScaler
+sd = StandardScaler()
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.decomposition import PCA
 
@@ -251,6 +253,7 @@ print(f'data ETL finished - cash_flow: {df.shape}')
 
 ### Clean columns
 df = df.reset_index()
+df['twd_amt_scaled'] = sd.fit_transform(df['twd_amt'].values.reshape(-1, 1))
 df = df.drop(['index','event','action_sponsor','action_type','cat_action','txn_currency_code','txn_type_desc','all_action_types'
               'atm_location','cat_location','target_acct_nbr','acct_nbr','customer_class_code','yyyymm','start_ym'], axis=1)
 print(f'data ETL finished - All: {df.shape}')

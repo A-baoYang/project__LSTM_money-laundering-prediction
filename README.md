@@ -36,6 +36,7 @@ Hive SQL，用於交易資料撈取
         - 人工新增詞庫 + jieba 斷詞 + 向量轉換 + 降維
     - **交易動作編碼**
         - 條件判斷 + One-hot + 降維
+    - 數值欄位進行縮放處理
 
 
 ## Make Sequence
@@ -47,10 +48,10 @@ Hive SQL，用於交易資料撈取
 
 
 ## Split & Scaling & Sampling
-`split_n_scaling_n_sampling.py`
+`split_n_sampling.py`
 1. Split：將資料集以 (train:validation:test = 5:2:3) 比例分割
-2. Scaling：再使用 trainset scale 對三個資料集進行縮放
-3. Sampling：進行 Over-sampling (本專案採用 SMOTE)
+    <!-- 2. Scaling：再使用 trainset scale 對三個資料集進行縮放 -->
+2. Sampling：進行 Over-sampling (本專案採用 SMOTE)
 
 
 ## Train, Val & Test

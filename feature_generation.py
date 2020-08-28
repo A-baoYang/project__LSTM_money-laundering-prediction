@@ -57,11 +57,13 @@ df = df[df['customer_class_code'] == 'I']
 df = df[df['label'] != 3].reset_index().drop(['index'], axis=1)
 print(f'Data filtered: {df.shape}')
 
-
 #### Missing value
 missing_value_cols = ['action_type','txn_currency_code','txn_type_desc','target_acct_nbr','target_bank_code','target_customer_id']
 for c in missing_value_cols:
     df[c] = df[c].fillna('unknown')
+
+##### Store a backup as CSV
+df.to_csv('CLEANED_data_observ_{}__labeled_{}.csv'.format(observ_daterange, label_daterange), index=False)
 
 #### Current Feature preprocessing
 df['atm_location'] = np.where((df['atm_location'].isnull()) & (df['event'] != 'atm_transaction'), '線上交易', df['atm_location'])
@@ -274,7 +276,7 @@ print(f'data ETL finished - cash_flow: {df.shape}')
 df = df.reset_index()
 df['twd_amt_scaled'] = sd.fit_transform(df['twd_amt'].values.reshape(-1, 1))
 df = df.drop(['index','event','action_sponsor','action_type','cat_action','txn_currency_code','txn_type_desc','all_action_types',
-              'atm_location','cat_location','target_acct_nbr','acct_nbr','customer_class_code','yyyymm','start_ym'], axis=1)
+              'atm_location','cat_location','target_bank_code','target_acct_nbr','acct_nbr','customer_class_code','yyyymm','start_ym'], axis=1)
 print(f'data ETL finished - All: {df.shape}')
 
 

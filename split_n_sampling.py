@@ -212,6 +212,44 @@ print(test_Y.groupby(['label']).size())
 # print('testing sequence data finish storage.')
 
 
+### Under-Sampling
+print('train_y label 0/1/2: ', train_y.values.tolist().count(0), train_y.values.tolist().count(1), train_y.values.tolist().count(2))
+print('val_y label 0/1/2: ', val_y.values.tolist().count(0), val_y.values.tolist().count(1), val_y.values.tolist().count(2))
+print('test_Y label 0/1/2: ', test_Y.values.tolist().count(0), test_Y.values.tolist().count(1), test_Y.values.tolist().count(2))
+train_y_0_indexes = [index for index, value in enumerate(train_y.values.tolist()) if value == 0]
+train_y_1_indexes = [index for index, value in enumerate(train_y.values.tolist()) if value == 1]
+train_y_2_indexes = [index for index, value in enumerate(train_y.values.tolist()) if value == 2]
+val_y_0_indexes = [index for index, value in enumerate(val_y.values.tolist()) if value == 0]
+val_y_1_indexes = [index for index, value in enumerate(val_y.values.tolist()) if value == 1]
+val_y_2_indexes = [index for index, value in enumerate(val_y.values.tolist()) if value == 2]
+train_y_0_sampled_indexes = np.random.choice(train_y_0_indexes, len(train_y_2_indexes), replace=False)
+val_y_0_sampled_indexes = np.random.choice(val_y_0_indexes, len(val_y_2_indexes), replace=False)
+
+train_indexes = []
+for ind in train_y_0_sampled_indexes:
+    train_indexes.append(ind)
+for ind in train_y_1_indexes:
+    train_indexes.append(ind)
+for ind in train_y_2_indexes:
+    train_indexes.append(ind)
+train_indexes = np.array(train_indexes)
+train_x_undersampled = train_x.iloc[:, 1:].values[train_indexes]
+train_y_undersampled = train_y.values[train_indexes]
+
+val_indexes = []
+for ind in val_y_0_sampled_indexes:
+    val_indexes.append(ind)
+for ind in val_y_1_indexes:
+    val_indexes.append(ind)
+for ind in val_y_2_indexes:
+    val_indexes.append(ind)
+val_indexes = np.array(val_indexes)
+val_x_undersampled = val_x.iloc[:, 1:].values[val_indexes]
+val_y_undersampled = val_y.values[val_indexes]
+print(train_x_undersampled.shape)
+print(val_x_undersampled.shape)
+
+
 ### Over-Sampling: SMOTE (only works for 2d data, need to reshape before implement)
 train_X_res, train_Y_res = SMOTE(random_state=666).fit_resample(np.reshape(train_x, (train_x.shape[0], train_x.shape[1]*train_x.shape[2])), train_y.label)
 val_X_res, val_Y_res = SMOTE(random_state=666).fit_resample(np.reshape(val_x, (val_x.shape[0], val_x.shape[1]*val_x.shape[2])), val_y.label)

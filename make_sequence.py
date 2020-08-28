@@ -87,4 +87,4 @@ for u in tqdm(uid):
 with open('make_sequence__observ_{}__labeled_{}_{}_{}_{}.json'.format(observ_daterange, label_daterange, try_date, version, desc), 'w') as fp:
     json.dump(all_seq, fp)
 
-df.to_csv('featureGeneration__observ_{}__labeled_{}_{}_{}_{}.csv'.format(observ_daterange, label_daterange, try_date, version, desc))
+df.to_csv('featureGeneration__observ_{}__labeled_{}_{}_{}_{}.csv'.format(observ_daterange, label_daterange, try_date, version, desc), index=False)

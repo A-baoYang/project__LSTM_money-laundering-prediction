@@ -47,7 +47,7 @@ Hive SQL，用於交易資料撈取
 - format: `json`
 
 
-## Split & Scaling & Sampling
+## Split & Sampling
 `split_n_sampling.py`
 1. Split：將資料集以 (train:validation:test = 5:2:3) 比例分割
     <!-- 2. Scaling：再使用 trainset scale 對三個資料集進行縮放 -->

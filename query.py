@@ -4,7 +4,6 @@ import spark
 # from pyspark.sql.window import Window
 # from pyspark import SparkConf, SparkContext
 import pandas as pd
-pd.set_option('display.max_columns', 500)
 
 
 ## constants
